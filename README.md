@@ -48,5 +48,7 @@ Make sure `election_backend.py` and `election_frontend.py` are both in the same 
 Contributions to this project are welcome. If you find any issues or have suggestions for improvements
 
 ## Acknowledgments
+## This project was done based on a problem statement/challenge.
+The problem statement is uploaded as `Problem Statement.md`
 
 This project was inspired by the need for secure and transparent electronic voting systems. It leverages the power of blockchain technology and cryptographic techniques to ensure the integrity of the voting process.
