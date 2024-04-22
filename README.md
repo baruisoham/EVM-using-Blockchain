@@ -1,6 +1,6 @@
 # Blockchain-Based E-Voting System with HMAC Authentication
 
-This project is an implementation of a blockchain-based electronic voting system using the Ethereum Virtual Machine (EVM) and Hash-based Message Authentication Code (HMAC) for secure authentication.
+This project is an implementation of a blockchain-based electronic voting system with Hash-based Message Authentication Code (HMAC) for secure authentication.
 
 ## Overview
 
