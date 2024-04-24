@@ -12,7 +12,7 @@ To ensure secure authentication, the system employs HMAC, a cryptographic techni
 
 ## Features
 
-- Secure voter registration and login using HMAC
+- Secure voter login using HMAC
 - Blockchain-based voting system with transaction recording
 - Proof-of-Work consensus mechanism
 - Admin interface for viewing requests and vote counts
