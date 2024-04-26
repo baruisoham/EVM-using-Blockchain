@@ -102,8 +102,11 @@ class UserInterface:
 
         candidate_choice = self.backend.blockchain.candidates[int(choice) - 1]
         transaction = Transaction(voter_id, candidate_choice)
-        self.backend.record_vote(transaction)
-        print("Vote recorded successfully. Thank you!")
+        vote_recorded = self.backend.record_vote(transaction)
+        if vote_recorded:
+            print("Vote recorded successfully. Thank you!")
+        else:
+            print("You have already voted and cannot vote again.")
 
     def admin_login(self):
         username = input("Enter admin username: ")
