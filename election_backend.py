@@ -17,6 +17,7 @@ class Blockchain:
         self.candidates = ["Candidate A", "Candidate B", "Candidate C"]
         self.vote_counts = {candidate: 0 for candidate in self.candidates}
         self.admin_account = "admin"
+        self.voted_voters = set()  # New set to track voted voters
         self.create_genesis_block()
 
     def create_genesis_block(self):
@@ -52,7 +53,11 @@ class Blockchain:
 
     def record_vote(self, transaction):
         prev_hash = self.chain[-1]['prev_hash']
+        if transaction.voter_id in self.voted_voters:
+            print(f"Voter {transaction.voter_id} has already voted and cannot vote again.")
+            return False
         if self.verify_transaction(transaction):
+            self.voted_voters.add(transaction.voter_id)  # Add voter_id to the set of voted voters
             new_block = self.create_block_with_transactions(prev_hash, [transaction])
             self.vote_counts[transaction.candidate_choice] += 1
             print(f"New block added to the blockchain: {new_block}")
