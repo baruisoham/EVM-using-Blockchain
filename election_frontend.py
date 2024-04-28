@@ -1,3 +1,4 @@
+# election_frontend.py
 import hmac
 import hashlib
 import random
@@ -21,7 +22,7 @@ class UserInterface:
         }
         print(f"Voter {voter_id} registered successfully.")
         print(f"Salt: {salt}")
-        # print(f"Secret Key: {secret_key}")  ###the secretkey is not being printed for confidentiality, but the feature is present.
+        # print(f"Secret Key: {secret_key}")
         print()
 
     def generate_challenge(self, voter_id):
