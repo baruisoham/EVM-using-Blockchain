@@ -1,3 +1,4 @@
+# election_backend.py
 import datetime
 import hashlib
 import random
@@ -17,7 +18,7 @@ class Blockchain:
         self.candidates = ["Candidate A", "Candidate B", "Candidate C"]
         self.vote_counts = {candidate: 0 for candidate in self.candidates}
         self.admin_account = "admin"
-        self.voted_voters = set()  # New set to track voted voters
+        self.voted_voters = set()
         self.create_genesis_block()
 
     def create_genesis_block(self):
@@ -35,7 +36,9 @@ class Blockchain:
         }
         return block
 
-    def create_block_with_transactions(self, prev_hash, transactions):
+    def create_block_with_transactions(self, transactions):
+        prev_block = self.chain[-1]
+        prev_hash = self.calculate_hash(prev_block)
         new_block = self.create_block(prev_hash, transactions, self.candidates)
         new_block = self.proof_of_work(new_block)
         self.chain.append(new_block)
@@ -52,23 +55,47 @@ class Blockchain:
         return account == self.admin_account
 
     def record_vote(self, transaction):
-        prev_hash = self.chain[-1]['prev_hash']
         if transaction.voter_id in self.voted_voters:
             print(f"Voter {transaction.voter_id} has already voted and cannot vote again.")
             return False
-        if self.verify_transaction(transaction):
-            self.voted_voters.add(transaction.voter_id)  # Add voter_id to the set of voted voters
-            new_block = self.create_block_with_transactions(prev_hash, [transaction])
-            self.vote_counts[transaction.candidate_choice] += 1
-            print(f"New block added to the blockchain: {new_block}")
-            return True
-        else:
-            print("Invalid transaction.")
+
+        if not self.verify_transaction(transaction):
+            print("Invalid transaction. Please check the voter ID and candidate choice.")
             return False
 
-    def verify_transaction(self, transaction):
-        # Implement transaction verification logic here
+        self.voted_voters.add(transaction.voter_id)
+        new_block = self.create_block_with_transactions([transaction])
+        self.vote_counts[transaction.candidate_choice] += 1
+        block_hash = self.calculate_hash(new_block)
+        print(f"New block added to the blockchain: {new_block}")
+        print(f"Hash of the new block: {block_hash}")
         return True
+
+    def verify_transaction(self, transaction):
+        # Check if the voter ID is valid
+        voter_id = transaction.voter_id
+        if not self.is_valid_voter_id(voter_id):
+            return False
+
+        # Check if the candidate choice is valid
+        candidate_choice = transaction.candidate_choice
+        if candidate_choice not in self.candidates:
+            return False
+
+        # Check if the voter has already voted
+        if voter_id in self.voted_voters:
+            return False
+
+        # Any additional verification logic (future implementation maybe)
+
+        return True
+
+    def is_valid_voter_id(self, voter_id):
+        # Can implement any logic to validate the voter ID
+        # For example, in future, we could check if the voter ID is in a registered voters database
+        # or if voter_id given matches a certain pattern or format
+        # For simplicity, any non-empty string is considered to be a valid voter ID here
+        return bool(voter_id)
 
     def get_vote_counts(self):
         return self.vote_counts
